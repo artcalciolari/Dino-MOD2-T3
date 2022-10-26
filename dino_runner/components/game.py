@@ -3,7 +3,7 @@ from turtle import screensize
 import pygame
 
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
-from dino_runner.components.dinossaur import Dinossaur
+from dino_runner.components.dinossaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.utils.text_utils import draw_message_component
 from dino_runner.components.powerups.power_up_manager import PowerUpManager
@@ -36,7 +36,7 @@ class Game: #definição das classes e elementos do player\background
 
         self.y_pos_bg = 380
 
-        self.player = Dinossaur()
+        self.player = Dinosaur()
 
         self.obstacle_manager = ObstacleManager()
 
@@ -53,10 +53,10 @@ class Game: #definição das classes e elementos do player\background
     
     def run(self):
         self.playing = True
-        self.obstacle_manager.reset_obstacle()
-        self.power_up_manager.reset_power_up()
-        self.score.reset_score()
-        self.game_speed.reset_game_speed()
+        self.obstacle_manager.reset_obstacles()
+        self.power_up_manager.reset_power_ups()
+        self.score = 0
+        self.game_speed = 20
         while self.playing:
             self.events()
             self.update()
@@ -64,15 +64,15 @@ class Game: #definição das classes e elementos do player\background
 
     def events(self):               
         for event in pygame.event.get():
-            if event.type == pygame.quit():
+            if event.type == pygame.QUIT:
                 self.playing = False
                 self.running = False
 
     def update(self):
+        self.update_score()
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
         self.obstacle_manager.update(self)
-        self.score.update()
         self.power_up_manager.update(self.score, self.game_speed, self.player)
 
     def update_score(self):
@@ -150,7 +150,7 @@ class Game: #definição das classes e elementos do player\background
                 self.screen,
                 pos_y_center= half_screen_height - 100
             )
-            self.screen.blit(ICON, (self.screen_width - 40, half_screen_height -30))
+            self.screen.blit(ICON, (half_screen_width - 20, half_screen_height -140))
         
         pygame.display.flip()
         self.handle_events_on_menu()

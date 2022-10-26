@@ -57,7 +57,7 @@ class Dinosaur(Sprite): #Definição dos elementos do dinossauro e dos diferente
         elif self.dino_jump:
             self.jump()
         elif self.dino_duck:
-            self.dino_duck()
+            self.duck()
 
         if user_input[pygame.K_UP] and not self.dino_jump:#função de pular
             self.dino_run = False
