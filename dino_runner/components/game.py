@@ -3,12 +3,12 @@ from turtle import screensize
 import pygame
 
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
-from dino_runner.components.dinosaur import Dinosaur
+from dino_runner.components.dinossaur import Dinossaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.utils.text_utils import draw_message_component
 from dino_runner.components.powerups.power_up_manager import PowerUpManager
 
-class Game:
+class Game: #definição das classes e elementos do player\background
 
     def __init__(self):
 
@@ -36,13 +36,13 @@ class Game:
 
         self.y_pos_bg = 380
 
-        self.player = Dinosaur()
+        self.player = Dinossaur()
 
         self.obstacle_manager = ObstacleManager()
 
         self.power_up_manager = PowerUpManager()
     
-    def execute(self):
+    def execute(self): # Essa parte cuida da execução do jogo, se ele estiver rodando(self.running = true) ele não vai puxar o menu, caso não esteja rodando(self.running = False) ele puxa a função do menu
         self.running = True
         while self.running:
             if not self.playing:
@@ -132,12 +132,12 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 self.run()
 
-    def show_menu(self):
+    def show_menu(self): # Parte do código que vai cuidar do menu do jogo, sendo ele o menu de inicio ou menu de 'restart'
         self.screen.fill((255, 255, 255))
         half_screen_height = SCREEN_WIDTH // 2
         half_screen_width = SCREEN_WIDTH // 2
         if self.death_count == 0:
-            draw_message_component("Press any key to start", self.screen)
+            draw_message_component("Press any key to start", self.screen) #esse draw message component() que cuida do que exibir na tela, sendo str ou uma varíavel pré-estabelecida
         else:
             draw_message_component("Press any key if you wish to restart", self.screen, pos_y_center= half_screen_height + 140)
             draw_message_component(

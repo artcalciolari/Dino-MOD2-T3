@@ -4,7 +4,7 @@ from pygame.sprite import Sprite
 
 
 
-from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, DEFAULT_TYPE, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD
+from dino_runner.utils.constants import BIRD, HAMMER, LARGE_CACTUS, RUNNING, JUMPING, DUCKING, DEFAULT_TYPE, SHIELD, SHIELD_TYPE, DUCKING_SHIELD, JUMPING_SHIELD, RUNNING_SHIELD, SMALL_CACTUS
 DUCK_IMG = { DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD}
 
 JUMP_IMG = { DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD}
@@ -19,7 +19,7 @@ Y_POS_DUCK = 340
 
 JUMP_VEL = 8.5
 
-class Dinosaur(Sprite):
+class Dinosaur(Sprite): #Definição dos elementos do dinossauro e dos diferentes tipos de mecânica. Como: power ups, pular e agachar
 
     def __init__(self):
 
@@ -45,13 +45,13 @@ class Dinosaur(Sprite):
 
         self.setup_state()
 
-    def setup_state(self):
+    def setup_state(self): #definição do estado inicial do dinossauro, quando o jogo acaba de começar
         self.has_power_up = False
         self.shield = False
         self.show_text = False
         self.shield_time_up = 0
     
-    def update(self, user_input):
+    def update(self, user_input): #definição das 3 mecânicas do jogo. 1 controlada pelo computador(run) e as outras 2 dependentes de inputs do jogador(jump e duck)
         if self.dino_run:
             self.run()
         elif self.dino_jump:
@@ -59,50 +59,72 @@ class Dinosaur(Sprite):
         elif self.dino_duck:
             self.dino_duck()
 
-        if user_input[pygame.K_UP] and not self.dino_jump:
+        if user_input[pygame.K_UP] and not self.dino_jump:#função de pular
             self.dino_run = False
             self.dino_jump = True
             self.dino_duck = False
-        elif user_input[pygame.K_DOWN] and not self.dino_jump:
+        elif user_input[pygame.K_DOWN] and not self.dino_jump:#função de agachar
             self.dino_run = False
             self.dino_jump = False
             self.dino_duck = True
-        elif not self.dino_jump and not self.dino_duck:
+        elif not self.dino_jump and not self.dino_duck:#função controlada pelo computador, o dinossauro nunca para de correr
             self.dino_run = True
             self.dino_jump = False
             self.dino_duck = False
         
-        if self.step_index >= 9:
+        if self.step_index >= 10:#contagem de passos
             self.step_index = 0
     
-    def run(self):
+    def run(self):#'ensinando' o computador a como lidar com a corrida do dino
         self.image = RUN_IMG[self.type][self.step_index // 5]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = X_POS
         self.dino_rect.y = Y_POS
         self.step_index += 1
 
-    def jump(self):
+    def jump(self):#'ensinando' o computador a como lidar com o jump
         self.image = JUMP_IMG[self.type]
         if self.dino_jump:
-            self.dino_rect.y -= self.jump_vel * 4
-            self.jump_vel -= 0.8
+            self.dino_rect.y -= self.jump_vel * 4 #varíaveis que cuidam da velocidade do pulo (1\2)
+            self.jump_vel -= 0.8#(2/2)
 
         if self.jump_vel < JUMP_VEL:
             self.dino_rect_y = Y_POS
             self.dino_jump = False
             self.jump_vel = JUMP_VEL
     
-    def duck(self):
+    def duck(self):#'ensinando' o dino a agachar
         self.image = DUCK_IMG[self.type][self.step_index // 5]
         self.dino_rect = self.image.get_rect()
-        self.dino_rect.x = X_POS
+        self.dino_rect.x = X_POS#referente a hitbox do dino, se ele passou em um obstáculo ou não
         self.dino_rect.y = Y_POS_DUCK
         self.step_index +=1
         self.dino_duck = False
 
-    def draw(self, screen):
+    def draw(self, screen):#.blit vai pedir pro pygame renderizar o que vier depois
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
 
+    def obstacle_manger(self):
+        self.image_bird = BIRD[self.type]
+        self.bird_rect = self.image_bird.get_rect()
+        self.bird_rect.x = X_POS
+        self.bird_rect.y = Y_POS
 
-        #faltam obstaculos e powerups
+        self.image_large_cactus = LARGE_CACTUS[self.type][self.step_index // 5]
+        self.image_small_cactus = SMALL_CACTUS[self.type][self.step_index // 5]
+        self.large_cactus_rect = self.image_large_cactus.get()
+        self.small_cactus_rect = self.image_small_cactus.get()
+        self.large_cactus_rect.x = X_POS
+        self.large_cactus_rect.y = Y_POS
+        self.small_cactus_rect.x = X_POS
+        self.small_cactus_rect.y = Y_POS
+
+
+
+    def power_up_manager(self):
+        self.image_shield = SHIELD[self.type]
+        self.image_hammer = HAMMER[self.type]
+        self.shield_rect = self.image_shield.get_rect()
+        self.hammer_rect = self.image_hammer.get_rect()
+        self.shield_rect.x = X_POS
+        self.shield_rect.y = Y_POS
