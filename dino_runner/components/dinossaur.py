@@ -48,6 +48,7 @@ class Dinosaur(Sprite): #Definição dos elementos do dinossauro e dos diferente
     def setup_state(self): #definição do estado inicial do dinossauro, quando o jogo acaba de começar
         self.has_power_up = False
         self.shield = False
+        self.hammer = False
         self.show_text = False
         self.shield_time_up = 0
     
@@ -88,7 +89,7 @@ class Dinosaur(Sprite): #Definição dos elementos do dinossauro e dos diferente
             self.dino_rect.y -= self.jump_vel * 4 #varíaveis que cuidam da velocidade do pulo (1\2)
             self.jump_vel -= 0.8#(2/2)
 
-        if self.jump_vel < JUMP_VEL:
+        if self.jump_vel < - JUMP_VEL:
             self.dino_rect_y = Y_POS
             self.dino_jump = False
             self.jump_vel = JUMP_VEL
@@ -98,33 +99,8 @@ class Dinosaur(Sprite): #Definição dos elementos do dinossauro e dos diferente
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = X_POS#referente a hitbox do dino, se ele passou em um obstáculo ou não
         self.dino_rect.y = Y_POS_DUCK
-        self.step_index +=1
+        self.step_index += 1
         self.dino_duck = False
 
     def draw(self, screen):#.blit vai pedir pro pygame renderizar o que vier depois
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
-
-    def obstacle_manger(self):
-        self.image_bird = BIRD[self.type]
-        self.bird_rect = self.image_bird.get_rect()
-        self.bird_rect.x = X_POS
-        self.bird_rect.y = Y_POS
-
-        self.image_large_cactus = LARGE_CACTUS[self.type][self.step_index // 5]
-        self.image_small_cactus = SMALL_CACTUS[self.type][self.step_index // 5]
-        self.large_cactus_rect = self.image_large_cactus.get()
-        self.small_cactus_rect = self.image_small_cactus.get()
-        self.large_cactus_rect.x = X_POS
-        self.large_cactus_rect.y = Y_POS
-        self.small_cactus_rect.x = X_POS
-        self.small_cactus_rect.y = Y_POS
-
-
-
-    def power_up_manager(self):
-        self.image_shield = SHIELD[self.type]
-        self.image_hammer = HAMMER[self.type]
-        self.shield_rect = self.image_shield.get_rect()
-        self.hammer_rect = self.image_hammer.get_rect()
-        self.shield_rect.x = X_POS
-        self.shield_rect.y = Y_POS
