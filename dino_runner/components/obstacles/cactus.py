@@ -4,7 +4,7 @@ from dino_runner.utils.constants import LARGE_CACTUS, SMALL_CACTUS
 from dino_runner.components.obstacles.obstacle import Obstacle
 
 
-class Cactus(Obstacle):
+class Cactus(Obstacle):#definição da classe cactus, com a lista randomica que irá selecionar um dos tipos de cacto
 
     CACTUS = [
         (LARGE_CACTUS, 300),

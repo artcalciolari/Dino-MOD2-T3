@@ -83,11 +83,11 @@ class Dinosaur(Sprite): #Definição dos elementos do dinossauro e dos diferente
         self.dino_rect.y = Y_POS
         self.step_index += 1
 
-    def jump(self):#'ensinando' o computador a como lidar com o jump
+    def jump(self):#'ensinando' o computador a como lidar com o jump, como qual imagem carregar
         self.image = JUMP_IMG[self.type]
         if self.dino_jump:
             self.dino_rect.y -= self.jump_vel * 4 #varíaveis que cuidam da velocidade do pulo (1\2)
-            self.jump_vel -= 0.8#(2/2)
+            self.jump_vel -= 0.7#(2/2)
 
         if self.jump_vel < - JUMP_VEL:
             self.dino_rect_y = Y_POS

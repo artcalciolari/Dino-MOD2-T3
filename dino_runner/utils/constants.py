@@ -15,6 +15,7 @@ RESTART_ICON = pygame.image.load(os.path.join(IMG_DIR, "Other/Reset.png"))
 BIRD_DECO = pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird2.png"))
 CACTUS_DECO = pygame.image.load(os.path.join(IMG_DIR, "Cactus/LargeCactus3.png"))
 GAMEOVER = pygame.image.load(os.path.join(IMG_DIR, "Other/GameOver.png"))
+TUTORIAL = pygame.image.load(os.path.join(IMG_DIR, "Other/Chrome Dino.gif"))
 
 
 

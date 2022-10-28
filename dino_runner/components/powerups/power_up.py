@@ -5,7 +5,7 @@ from pygame.sprite import Sprite
 from dino_runner.utils.constants import SCREEN_WIDTH
 
 
-class PowerUp(Sprite):
+class PowerUp(Sprite):#parte que vai definir a rect() dos powerups e cuidar da renderização dos icones
     def __init__(self, image, type):
         self.image = image
         self.type = type

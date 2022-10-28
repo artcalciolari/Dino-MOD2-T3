@@ -1,7 +1,7 @@
 import random
 from dino_runner.utils.constants import CLOUD, SCREEN_WIDTH
  
-class Cloud:
+class Cloud:#classe da cloud pra ser chamada de elemento de fundo
     def __init__(self):
         self.cloud = CLOUD
         self.x = SCREEN_WIDTH + random.randint(800, 1000)

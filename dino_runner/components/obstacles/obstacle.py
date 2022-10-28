@@ -4,7 +4,7 @@ from pygame.sprite import Sprite
 from dino_runner.utils.constants import SCREEN_WIDTH
 
 
-class Obstacle(Sprite):
+class Obstacle(Sprite):#dizendo ao computador o que fazer com o obstaculo, e atribuindo a função rect() basicamente uma hitbox
     def __init__(self, image, type):
         self.image = image
         self.type = type

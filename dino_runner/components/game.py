@@ -2,7 +2,7 @@ from operator import truediv
 from turtle import screensize
 import pygame
 
-from dino_runner.utils.constants import BG, BIRD, BIRD_DECO, CACTUS_DECO, DINOD, GAMEOVER, ICON, RESTART_ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
+from dino_runner.utils.constants import BG, TUTORIAL, BIRD_DECO, CACTUS_DECO, DINOD, GAMEOVER, ICON, RESTART_ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
 from dino_runner.components.dinossaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.obstacles.cloud import Cloud
@@ -38,36 +38,36 @@ class Game: #definição das classes e elementos do player\background
         pygame.display.quit()
         pygame.quit()
     
-    def run(self):
+    def run(self):#quando o jogo iniciar, esse def serve pra resetar tudo
         self.playing = True
         self.obstacle_manager.reset_obstacles()
         self.power_up_manager.reset_power_ups()
         self.score = 0
         self.game_speed = 10
-        while self.playing:
+        while self.playing:#enquanto o jogo tiver rodando, ele vai ficar nesse ciclo de event => update => draw
             self.events()
             self.update()
             self.draw()
 
-    def events(self):               
+    def events(self):#isso serve pra quando a gente apertar o botão vermelho que nunca responde, ele fechar o processo
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.playing = False
                 self.running = False
 
     def update(self):
-        self.update_score()
+        self.update_speed()
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
         self.obstacle_manager.update(self)
         self.power_up_manager.update(self.score, self.game_speed, self.player)
 
-    def update_score(self):
+    def update_speed(self):
         self.score += 1
         if self.score % 200 == 0:
-            self.game_speed +=5
+            self.game_speed += 2
 
-    def draw(self):
+    def draw(self):#chamando as funções e renderizando-as
             self.clock.tick(FPS)
             self.screen.fill((255, 255, 255))
             self.draw_background()
@@ -81,8 +81,8 @@ class Game: #definição das classes e elementos do player\background
             self.show_fps() 
             pygame.display.update()
             pygame.display.flip()
-
-    def draw_background(self):
+        
+    def draw_background(self):#renderizando o background
         image_width = BG.get_width()
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
         self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
@@ -91,7 +91,7 @@ class Game: #definição das classes e elementos do player\background
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
 
-    def draw_score(self):
+    def draw_score(self):#função pra mostrar o score no canto superior direito da tela
        draw_message_component(
         f"Score: {self.score}",
         self.screen,
@@ -99,7 +99,7 @@ class Game: #definição das classes e elementos do player\background
         pos_y_center=50
         )
     
-    def show_fps(self):
+    def show_fps(self):#função pra mostrar o fps no canto da tela kkkkkk (pc master race)
         draw_message_component(
         f'FPS: {self.clock.get_fps():.0f}',
         self.screen,
@@ -107,12 +107,12 @@ class Game: #definição das classes e elementos do player\background
         pos_y_center=30
         )
 
-    def draw_power_up_time(self):
+    def draw_power_up_time(self):#contador do tempo do power up
         if self.player.has_power_up:
             time_to_show = round((self.player.power_up_time - pygame.time.get_ticks()) / 1000, 2)
             if time_to_show >= 0:
                 draw_message_component(
-                    f'{self.player.type.capitalize()} enabled for {time_to_show} seconds',
+                    f'{self.player.type.capitalize()} enabled for {time_to_show:.0f} seconds',
                     self.screen,
                     font_size = 18,
                     pos_x_center=500,
@@ -122,12 +122,12 @@ class Game: #definição das classes e elementos do player\background
                 self.player.has_power_up = False
                 self.player.type = DEFAULT_TYPE
     
-    def handle_events_on_menu(self):
+    def handle_events_on_menu(self):#Parte que vai cuidar dos inputs do jogador, se ele pressionou o botão vermelho que nunca responde, ou alguma tecla pra reiniciar o jogo
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.playing = False
                 self.running = False
-            elif event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                 self.run()
 
     def show_menu(self): # Parte do código que vai cuidar do menu do jogo, sendo ele o menu de inicio ou menu de 'restart'

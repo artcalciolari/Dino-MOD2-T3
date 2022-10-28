@@ -2,7 +2,7 @@ from dino_runner.utils.constants import BIRD
 from dino_runner.components.obstacles.obstacle import Obstacle
 
 
-class Bird(Obstacle):
+class Bird(Obstacle):#definição da classe bird pra ser chamada depois
     def __init__(self):
         super().__init__(BIRD, 0)
         self.rect.y = 250
